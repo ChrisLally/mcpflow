@@ -31,7 +31,23 @@ export default function ApiKeysPage() {
             <DialogHeader>
               <DialogTitle>Add New API Key</DialogTitle>
             </DialogHeader>
-            <ApiKeyForm onSuccess={handleSuccess} />
+            <ApiKeyForm 
+              onSuccess={handleSuccess} 
+              services={[
+                { 
+                  name: 'github', 
+                  description: 'GitHub API for repository management'
+                },
+                { 
+                  name: 'openai', 
+                  description: 'OpenAI API for AI models'
+                },
+                { 
+                  name: 'anthropic', 
+                  description: 'Anthropic API for Claude models'
+                }
+              ]} 
+            />
           </DialogContent>
         </Dialog>
       </div>

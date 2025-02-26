@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useSupabase } from '../providers/supabase-provider';
 import {
   Table,
@@ -38,7 +38,7 @@ export function ApiKeyList() {
   const [isLoading, setIsLoading] = useState(true);
 
   // Load API keys
-  const loadApiKeys = async () => {
+  const loadApiKeys = useCallback(async () => {
     setIsLoading(true);
     try {
       const { data, error } = await supabase
@@ -63,7 +63,7 @@ export function ApiKeyList() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [supabase]);
 
   // Delete API key
   const deleteApiKey = async (id: string) => {
@@ -91,7 +91,7 @@ export function ApiKeyList() {
   // Load API keys on component mount
   useEffect(() => {
     loadApiKeys();
-  }, []);
+  }, [loadApiKeys]);
 
   if (isLoading) {
     return <div>Loading...</div>;

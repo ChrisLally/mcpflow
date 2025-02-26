@@ -26,10 +26,13 @@ export async function encryptCredential(plaintext: string): Promise<string> {
 
   const [result] = await kmsClient.encrypt({
     name: keyName,
-    plaintext: Buffer.from(plaintext, 'utf8'),
-    additionalAuthenticatedData: Buffer.from('mcpflow', 'utf8'),
+    plaintext: Buffer.from(plaintext),
+    additionalAuthenticatedData: Buffer.from('mcpflow'),
   });
-  return result.ciphertext!.toString('base64');
+
+  // Convert Uint8Array to Buffer before encoding to base64
+  const buffer = Buffer.from(result.ciphertext as Uint8Array);
+  return buffer.toString('base64');
 }
 
 export async function decryptCredential(encrypted: string): Promise<string> {
@@ -40,7 +43,10 @@ export async function decryptCredential(encrypted: string): Promise<string> {
   const [result] = await kmsClient.decrypt({
     name: keyName,
     ciphertext: Buffer.from(encrypted, 'base64'),
-    additionalAuthenticatedData: Buffer.from('mcpflow', 'utf8'),
+    additionalAuthenticatedData: Buffer.from('mcpflow'),
   });
-  return result.plaintext!.toString('utf8');
+
+  // Convert Uint8Array to Buffer before converting to string
+  const buffer = Buffer.from(result.plaintext as Uint8Array);
+  return buffer.toString();
 } 
