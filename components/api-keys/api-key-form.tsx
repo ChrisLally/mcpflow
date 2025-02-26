@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -33,15 +33,20 @@ const apiKeySchema = z.object({
 
 type ApiKeyFormValues = z.infer<typeof apiKeySchema>;
 
+interface Service {
+  name: string;
+  description: string;
+}
+
 interface ApiKeyFormProps {
   onSuccess?: () => void;
   initialData?: ApiKeyFormValues;
+  services: Service[];
 }
 
-export function ApiKeyForm({ onSuccess, initialData }: ApiKeyFormProps) {
-  const { supabase } = useSupabase();
+export function ApiKeyForm({ onSuccess, initialData, services }: ApiKeyFormProps) {
+  const supabase = useSupabase();
   const [isLoading, setIsLoading] = useState(false);
-  const [services, setServices] = useState<{ id: string; name: string }[]>([]);
 
   // Initialize form with react-hook-form
   const form = useForm<ApiKeyFormValues>({
@@ -53,43 +58,44 @@ export function ApiKeyForm({ onSuccess, initialData }: ApiKeyFormProps) {
     },
   });
 
-  // Load available services
-  const loadServices = async () => {
-    const { data, error } = await supabase
-      .from('_services')
-      .select('id, name');
-    
-    if (error) {
-      toast.error('Error loading services', {
-        description: error.message
-      });
-      return;
-    }
-
-    setServices(data || []);
-  };
-
-  // Load services on mount
-  useEffect(() => {
-    loadServices();
-  }, []);
-
   // Handle form submission
   const onSubmit = async (values: ApiKeyFormValues) => {
     setIsLoading(true);
     try {
-      // TODO: Implement client-side encryption of the API key
-      const encryptedKey = values.key; // Replace with actual encryption
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
-      const { error } = await supabase.from('_api_keys').insert({
-        name: values.name,
-        encrypted_key: encryptedKey,
-        service: values.service,
+      if (!user) throw new Error('You must be logged in to add an API key');
+
+      // Encrypt the API key using the server endpoint
+      const response = await fetch('/api/encrypt', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ apiKey: values.key }),
       });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to encrypt API key');
+      }
+
+      const { encryptedKey } = await response.json();
+
+      const { error } = await supabase
+        .from('_api_keys')
+        .insert({
+          name: values.name,
+          encrypted_key: encryptedKey,
+          service: values.service.toLowerCase(),
+          user_id: user.id,
+        });
 
       if (error) throw error;
 
-      toast.success('API key has been saved');
+      toast.success('API key has been saved securely');
       form.reset();
       onSuccess?.();
     } catch (error) {
@@ -137,8 +143,8 @@ export function ApiKeyForm({ onSuccess, initialData }: ApiKeyFormProps) {
                 </FormControl>
                 <SelectContent>
                   {services.map((service) => (
-                    <SelectItem key={service.id} value={service.id}>
-                      {service.name}
+                    <SelectItem key={service.name} value={service.name}>
+                      {service.name} - {service.description}
                     </SelectItem>
                   ))}
                 </SelectContent>

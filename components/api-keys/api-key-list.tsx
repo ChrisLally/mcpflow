@@ -33,7 +33,7 @@ interface ApiKey {
 }
 
 export function ApiKeyList() {
-  const { supabase } = useSupabase();
+  const supabase = useSupabase();
   const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 

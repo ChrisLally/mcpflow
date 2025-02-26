@@ -20,7 +20,7 @@ export default function ApiKeysPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="p-8 space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">API Keys</h1>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
