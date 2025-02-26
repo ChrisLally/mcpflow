@@ -22,6 +22,36 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 
+import {
+  LayoutDashboard,
+  Key,
+  Server,
+  Settings,
+} from 'lucide-react'
+
+export const mainNavItems = [
+  {
+    title: "Overview",
+    href: "/",
+    icon: LayoutDashboard,
+  },
+  {
+    title: "API Keys",
+    href: "/dashboard/api-keys",
+    icon: Key,
+  },
+  {
+    title: "MCP Servers",
+    href: "/mcp-servers",
+    icon: Server,
+  },
+  {
+    title: "Settings",
+    href: "/settings",
+    icon: Settings,
+  },
+]
+
 export function NavMain({
   items,
 }: {

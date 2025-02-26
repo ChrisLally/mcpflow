@@ -1,58 +1,41 @@
 'use client';
 
-import { useState } from 'react';
-import { ApiKeyForm } from '@/components/api-keys/api-key-form';
-import { ApiKeyList } from '@/components/api-keys/api-key-list';
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+import { Button } from "@/components/ui/button"
+import { Plus } from "lucide-react"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
-export default function ApiKeysPage() {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-  const handleSuccess = () => {
-    setIsDialogOpen(false);
-  };
-
+export default function APIKeysPage() {
   return (
-    <div className="p-8 space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">API Keys</h1>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button>Add API Key</Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Add New API Key</DialogTitle>
-            </DialogHeader>
-            <ApiKeyForm 
-              onSuccess={handleSuccess} 
-              services={[
-                { 
-                  name: 'github', 
-                  description: 'GitHub API for repository management'
-                },
-                { 
-                  name: 'openai', 
-                  description: 'OpenAI API for AI models'
-                },
-                { 
-                  name: 'anthropic', 
-                  description: 'Anthropic API for Claude models'
-                }
-              ]} 
-            />
-          </DialogContent>
-        </Dialog>
+    <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">API Keys</h1>
+          <p className="text-muted-foreground">
+            Manage your API keys and service integrations
+          </p>
+        </div>
+        <Button>
+          <Plus className="mr-2 h-4 w-4" />
+          Add API Key
+        </Button>
       </div>
 
-      <ApiKeyList />
+      <div className="grid gap-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Your API Keys</CardTitle>
+            <CardDescription>
+              View and manage your encrypted API keys
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {/* API keys list will go here */}
+            <div className="text-sm text-muted-foreground">
+              No API keys found. Click &ldquo;Add API Key&rdquo; to create one.
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
-  );
+  )
 } 

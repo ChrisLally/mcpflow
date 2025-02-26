@@ -1,11 +1,7 @@
 "use client"
 
 import * as React from "react"
-import {
-  SquareTerminal,
-  KeyIcon,
-  HomeIcon,
-} from "lucide-react"
+import { HomeIcon } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
 import { NavProjects } from "@/components/nav-projects"
@@ -18,8 +14,22 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { mainNavItems } from "./nav-main"
 
-// This is sample data.
+// Convert mainNavItems to the format expected by NavMain
+const navMainData = mainNavItems.map(item => ({
+  title: item.title,
+  url: item.href,
+  icon: item.icon,
+  items: [
+    {
+      title: item.title,
+      url: item.href,
+    },
+  ],
+}))
+
+// This is sample data for other components
 const data = {
   teams: [
     {
@@ -28,38 +38,7 @@ const data = {
       plan: "free",
     },
   ],
-  navMain: [
-    {
-      title: "Overview",
-      url: "/dashboard",
-      icon: HomeIcon,
-      isActive: true,
-      items: [
-        {
-          title: "Dashboard",
-          url: "/dashboard",
-        },
-      ],
-    },
-    {
-      title: "API Management",
-      url: "/dashboard/api-keys",
-      icon: KeyIcon,
-      items: [
-        {
-          title: "API Keys",
-          url: "/dashboard/api-keys",
-        },
-      ],
-    },
-  ],
-  projects: [
-    {
-      name: "Project 1",
-      url: "/projects/1",
-      icon: SquareTerminal,
-    },
-  ],
+  projects: [],
   user: {
     name: "John Doe",
     email: "john@example.com",
@@ -74,7 +53,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={navMainData} />
         <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
