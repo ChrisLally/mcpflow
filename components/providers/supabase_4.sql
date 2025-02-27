@@ -134,7 +134,7 @@ declare
   v_system_user_id uuid;
 begin
   -- Use the existing admin user ID
-  v_system_user_id := '672893c5-071e-4323-9ada-592b2cac7af6'::uuid;
+  v_system_user_id := 'af6e2689-93ab-458e-b56b-26f2675ca8cd'::uuid;
   
   -- Insert example MCP servers
   insert into _server_configs (
