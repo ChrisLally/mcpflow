@@ -36,14 +36,29 @@ export const mainNavItems = [
     icon: LayoutDashboard,
   },
   {
+    title: "Browse MCP Servers",
+    href: "/dashboard/browse-mcp-servers",
+    icon: Server,
+  },
+  {
+    title: "My Servers",
+    href: "/dashboard/my-servers",
+    icon: Server,
+  },
+  {
     title: "API Keys",
     href: "/dashboard/api-keys",
     icon: Key,
   },
   {
-    title: "MCP Servers",
-    href: "/mcp-servers",
+    title: "Services",
+    href: "/dashboard/services",
     icon: Server,
+  },
+  {
+    title: "Usage & Monitoring",
+    href: "/dashboard/usage",
+    icon: LayoutDashboard,
   },
   {
     title: "Settings",
