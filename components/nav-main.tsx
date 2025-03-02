@@ -51,11 +51,6 @@ export const mainNavItems = [
     icon: Key,
   },
   {
-    title: "Services",
-    href: "/dashboard/services",
-    icon: Server,
-  },
-  {
     title: "Usage & Monitoring",
     href: "/dashboard/usage",
     icon: LayoutDashboard,

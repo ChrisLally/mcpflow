@@ -199,7 +199,7 @@ export default function MyServersPage() {
           <CardHeader>
             <CardTitle>No Servers Configured</CardTitle>
             <CardDescription>
-              You haven't added any MCP servers yet. Get started by adding a server or browsing available configurations.
+              You haven&apos;t added any MCP servers yet. Get started by adding a server or browsing available configurations.
             </CardDescription>
           </CardHeader>
           <CardContent className="flex justify-center gap-4">
